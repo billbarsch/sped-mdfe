@@ -86,6 +86,10 @@ class Make extends BaseMake
     /**
      * @var DOMElement
      */
+    private $acodAgPorto;
+    /**
+     * @var DOMElement
+     */
     private $veicTracao;
     /**
     * @var DOMElement
@@ -1362,13 +1366,8 @@ class Make extends BaseMake
     {
 
         $rodo = $this->dom->createElement("rodo");
-        $this->dom->addChild(
-            $rodo,
-            "codAgPorto",
-            $codAgPorto,
-            false,
-            "Código de Agendamento no porto"
-        );
+
+        $this->acodAgPorto = $codAgPorto;
         $this->rodo = $rodo;
         return $rodo;
     }
@@ -1554,25 +1553,25 @@ class Make extends BaseMake
      *
      * @param string $cInt
      * @param string $placa
+     * @param string $RENAVAM
      * @param string $tara
      * @param string $capKG
      * @param string $capM3
      * @param string $tpRod
      * @param string $tpCar
      * @param string $UF
-     * @param string $RENAVAM
      * @return DOMElement
      */
     public function tagVeicTracao(
         $cInt = '',
         $placa = '',
+        $RENAVAM = '',
         $tara = '',
         $capKG = '',
         $capM3 = '',
         $tpRod = '',
         $tpCar = '',
-        $UF = '',
-        $RENAVAM = ''
+        $UF = ''
     )
     {
 
@@ -1580,6 +1579,7 @@ class Make extends BaseMake
             'veicTracao',
             $cInt,
             $placa,
+            $RENAVAM,
             $tara,
             $this->aCondutor,
             $capKG,
@@ -1587,7 +1587,6 @@ class Make extends BaseMake
             $tpRod,
             $tpCar,
             $UF,
-            $RENAVAM,
             $this->aProprietario
         );
         $this->veicTracao = $veicTracao;
@@ -1811,6 +1810,7 @@ class Make extends BaseMake
         $tag = '',
         $cInt = '',
         $placa = '',
+        $RENAVAM = '',
         $tara = '',
         $condutores = array(),
         $capKG = '',
@@ -1818,7 +1818,6 @@ class Make extends BaseMake
         $tpRod = '',
         $tpCar = '',
         $UF = '',
-        $RENAVAM = '',
         $proprietarios = array()
     )
     {
@@ -2021,6 +2020,13 @@ class Make extends BaseMake
             }
             $this->dom->appChild($this->rodo, $this->veicTracao, 'Falta tag "rodo"');
             $this->dom->addArrayChild($this->rodo, $this->aReboque);
+            $this->dom->addChild(
+                $this->rodo,
+                "codAgPorto",
+                $this->acodAgPorto,
+                false,
+                "Código de Agendamento no porto"
+            );
             $this->dom->appChild($this->infModal, $this->rodo, 'Falta tag "infModal"');
         }
     }
