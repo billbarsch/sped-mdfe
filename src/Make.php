@@ -88,6 +88,14 @@ class Make extends BaseMake
      */
     private $veicTracao;
     /**
+    * @var DOMElement
+    */
+    private $adhIniViagem;
+    /**
+    * @var DOMElement
+    */
+    private $aindCarregaPosterior;
+    /**
      * @var DOMElement
      */
     private $aereo;
@@ -252,6 +260,7 @@ class Make extends BaseMake
      * @param string $UFIni
      * @param string $UFFim
      * @param string $dhIniViagem
+     * @param string $indCarregaPosterior
      * @return DOMElement|string
      */
     public function tagide(
@@ -395,23 +404,9 @@ class Make extends BaseMake
             $identificador . "Sigla da UF do Descarregamento"
         );
 
-        $this->dom->addArrayChild($ide, $this->aInfMunCarrega);
-        $this->dom->addArrayChild($ide, $this->aInfPercurso);
+        $this->adhIniViagem = $dhIniViagem;
+        $this->aindCarregaPosterior = $indCarregaPosterior;
 
-        $this->dom->addChild(
-            $ide,
-            "dhIniViagem",
-            $dhIniViagem,
-            false,
-            $identificador . "Data e hora previstos de inicio da viagem"
-        );
-        $this->dom->addChild(
-            $ide,
-            "indCarregaPosterior",
-            $indCarregaPosterior,
-            false,
-            $identificador . "Indicador de MDF-e com inclusão da Carga posterior a emissão por evento de inclusão de DF-e"
-        );
         $this->mod = $mod;
         $this->ide = $ide;
         return $this->ide;
@@ -1929,8 +1924,24 @@ class Make extends BaseMake
      */
     protected function zTagIde()
     {
-     //   $this->dom->addArrayChild($this->ide, $this->aInfMunCarrega);
-       // $this->dom->addArrayChild($this->ide, $this->aInfPercurso);
+        $identificador = '[4] <ide> - ';
+        $this->dom->addArrayChild($this->ide, $this->aInfMunCarrega);
+        $this->dom->addArrayChild($this->ide, $this->aInfPercurso);
+
+        $this->dom->addChild(
+            $this->ide,
+            "dhIniViagem",
+            $this->adhIniViagem,
+            false,
+            $identificador . "Data e hora previstos de inicio da viagem"
+        );
+        $this->dom->addChild(
+            $this->ide,
+            "indCarregaPosterior",
+            $this->aindCarregaPosterior,
+            false,
+            $identificador . "Indicador de MDF-e com inclusão da Carga posterior a emissão por evento de inclusão de DF-e"
+        );
     }
 
     /**
